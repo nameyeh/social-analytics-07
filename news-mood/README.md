@@ -1,4 +1,12 @@
 
+# News Mood Analysis 
+#### Objective: Perform a sentiment analysis of the Twitter activity of various news organizations, and create data visualizations to present findings. 
+## Observed Trends 
+* The scatter plot shows sentiments of the last 100 tweets sent out by each news organization, ranging from -1.0 to 1.0, where a score of 0 expresses a neutral sentiment, -1 the most negative sentiment possible, and +1 the most positive sentiment possible. We see that CBS is concentrated more on the positive side of the plot, whereas the the other news organizations seem more evenly spread out. 
+* The bar plot is much clearer in showing differences between overall sentiments for each news organization. CBS is most positive, with a mean compound score of 0.3385, followed by BBC, which is slightly positive with a score of 0.0884. CNN and NYTimes had similar negative scores, -0.0747 and -0.0710, respectively. Fox had the score closest to neutral, with -0.0209. 
+* It's important to note that these results only take into account the 100 most recent tweets and results may be more representative of a news organization if the timeframe was expanded. 
+
+
 
 ```python
 # Dependencies
@@ -32,7 +40,7 @@ target_users = ("@BBC","@CBS","@CNN","@FoxNews","@nytimes")
 user_acct = []
 tweet_txt = []
 tweet_dt =[]
-# vader lists 
+# Vader lists 
 compound_list = []
 positive_list = []
 negative_list = []
@@ -208,7 +216,7 @@ nyt = df2.loc[df2["Account"] == "@nytimes"]
 
 
 ```python
-# Sort dfs by date - ascending = F
+# Sort dfs by relative timestamp - date, ascending = False 
 bbc = bbc.sort_values("Date", ascending=False)
 cbs = cbs.sort_values("Date", ascending=False)
 cnn = cnn.sort_values("Date", ascending=False)
@@ -230,7 +238,7 @@ plt.scatter(x_axis, cnn["Compound"], edgecolor="black", color='red', marker="o",
 plt.scatter(x_axis, fox["Compound"], edgecolor="black", color='mediumblue', marker="o", alpha=0.65, label="FOX")
 plt.scatter(x_axis, nyt["Compound"], edgecolor="black", color='yellow', marker="o", alpha=0.65, label="NYTimes")
 
-# set title and axis labels
+# Set title and axis labels
 plt.title("Sentiment Analysis of Media Tweets (3/20/18)")
 plt.ylabel("Tweet Polarity (Compound Score)")
 plt.xlabel("Tweets Ago")
@@ -245,19 +253,19 @@ plt.show()
 ```
 
 
-![png](output_9_0.png)
+![png](output_10_0.png)
 
 
 
 ```python
-# store the average sentiments separately 
+# Store average sentiments separately 
 bbc_mean = bbc["Compound"].mean()
 cbs_mean = cbs["Compound"].mean()
 cnn_mean = cnn["Compound"].mean()
 fox_mean = fox["Compound"].mean()
 nyt_mean = nyt["Compound"].mean()
 
-# create mean df 
+# Create mean df 
 mean_scores = pd.DataFrame ({"BBC": [bbc_mean],
                              "CBS": [cbs_mean],
                              "CNN": [cnn_mean],
@@ -267,10 +275,10 @@ mean_scores = pd.DataFrame ({"BBC": [bbc_mean],
 mean_scores = mean_scores.round(4)
 mean_scores.index = ['Mean Cmpd Scores']
 
-# save df to csv 
+# Save df to csv 
 mean_scores.to_csv("mean_cmpd_scores.csv")
 
-# print df 
+# Print df 
 mean_scores
 ```
 
@@ -328,7 +336,7 @@ means = [bbc_mean, cbs_mean, cnn_mean, fox_mean, nyt_mean]
 colors = ['dodgerblue', 'green', 'red', 'mediumblue', 'yellow']
 plt.bar(x_axis, means, align='edge', color=colors)
 
-# set title and axis labels
+# Set title and axis labels
 plt.title("Overall Media Sentiment Based on Recent Tweets (3/20/18)")
 plt.xlabel("Media Source")
 plt.ylabel("Tweet Polarity (Mean Cmpd Score)")
@@ -343,5 +351,5 @@ plt.show()
 ```
 
 
-![png](output_11_0.png)
+![png](output_12_0.png)
 
